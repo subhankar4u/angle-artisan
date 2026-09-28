@@ -1,0 +1,1 @@
+UPDATE public.creator_settings SET demo_mode = false, ai_provider_configured = true, image_provider_configured = true;
