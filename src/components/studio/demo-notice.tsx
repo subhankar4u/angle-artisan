@@ -1,6 +1,21 @@
-import { Info, ShieldAlert } from "lucide-react";
+import { Info, ShieldAlert, Sparkles } from "lucide-react";
+import { createContext, useContext } from "react";
+
+export const RunModeContext = createContext<"demo" | "live">("demo");
 
 export function DemoNotice({ compact = false }: { compact?: boolean }) {
+  const mode = useContext(RunModeContext);
+  if (mode === "live") {
+    return (
+      <div className="flex items-start gap-2.5 rounded-lg border border-border bg-surface-2/60 px-3 py-2.5">
+        <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" />
+        <div className="text-xs leading-relaxed text-muted-foreground">
+          <span className="font-semibold text-foreground">Live Mode.</span> Written and illustrated by AI from your
+          brief. No web research is connected, so nothing here is a verified source — review before approving.
+        </div>
+      </div>
+    );
+  }
   if (compact) {
     return (
       <p className="flex items-start gap-1.5 text-[11px] leading-relaxed text-muted-foreground">

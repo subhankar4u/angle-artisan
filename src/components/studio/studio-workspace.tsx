@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { ApprovalPanel } from "@/components/studio/approval-panel";
 import { BriefPanel } from "@/components/studio/brief-panel";
 import { LinkedInPreview } from "@/components/studio/linkedin-preview";
+import { RunModeContext } from "@/components/studio/demo-notice";
 import { AngleTab } from "@/components/studio/tabs/angle-tab";
 import { PostTab } from "@/components/studio/tabs/post-tab";
 import { QaTab } from "@/components/studio/tabs/qa-tab";
@@ -199,6 +200,7 @@ export function StudioWorkspace({ projectId }: { projectId: string }) {
               onRetry={() => void refreshBundle()}
             />
           ) : (
+            <RunModeContext.Provider value={bundle?.run.mode === "live" ? "live" : "demo"}>
             <Tabs
               value={activeStage}
               onValueChange={(v) => setActiveStage(v as StageId)}
@@ -285,6 +287,7 @@ export function StudioWorkspace({ projectId }: { projectId: string }) {
                 </TabsContent>
               </div>
             </Tabs>
+            </RunModeContext.Provider>
           )}
         </section>
 

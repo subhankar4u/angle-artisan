@@ -65,13 +65,15 @@ export function LinkedInPreview({
           )}
         </div>
 
-        {visual ? (
+        {visual?.image_url ? (
+          <img src={visual.image_url} alt={visual.alt_text} className="w-full border-y border-border object-cover" />
+        ) : visual ? (
           <div className="border-y border-border bg-surface-2/70 px-4 py-6">
             <div className="flex flex-col items-center gap-2 text-center">
               <ImageOff className="size-5 text-muted-foreground" />
               <p className="text-[11px] font-medium">Image placeholder ({visual.aspect_ratio})</p>
               <p className="max-w-xs text-[11px] leading-relaxed text-muted-foreground">
-                No image has been generated. The Visual stage produced a concept and prompt only.
+                No image yet. Use "Generate image" in the image-prompt tab.
               </p>
             </div>
           </div>
