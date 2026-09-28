@@ -2,7 +2,10 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { FlaskConical, FolderKanban, LayoutDashboard, Settings, Sparkle } from "lucide-react";
 import type { ReactNode } from "react";
 
+import { useQuery } from "@tanstack/react-query";
+
 import { Badge } from "@/components/ui/badge";
+import { fetchSettings, qk } from "@/lib/studio/api";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -17,7 +20,7 @@ export function AppShell({
   title,
   subtitle,
   actions,
-  demoMode = true,
+  demoMode: demoModeProp,
 }: {
   children: ReactNode;
   title: string;
@@ -26,6 +29,8 @@ export function AppShell({
   demoMode?: boolean;
 }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const settingsQ = useQuery({ queryKey: qk.settings, queryFn: fetchSettings });
+  const demoMode = demoModeProp ?? settingsQ.data?.demo_mode ?? false;
 
   return (
     <div className="flex min-h-screen bg-background">

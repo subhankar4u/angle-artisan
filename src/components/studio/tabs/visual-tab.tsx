@@ -7,7 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import type { RunBundle } from "@/lib/studio/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { updateVisual, type RunBundle } from "@/lib/studio/api";
+import { generateImageFor } from "@/lib/studio/live-provider";
 import type { VisualPrompt } from "@/lib/studio/types";
 
 export function VisualTab({
@@ -33,6 +35,9 @@ export function VisualTab({
   const [negative, setNegative] = useState(visual?.negative_prompt ?? "");
   const [alt, setAlt] = useState(visual?.alt_text ?? "");
   const [copied, setCopied] = useState(false);
+  const [imgBusy, setImgBusy] = useState(false);
+  const [imgError, setImgError] = useState<string | null>(null);
+  const qc = useQueryClient();
 
   useEffect(() => {
     if (!visual) return;
@@ -71,12 +76,37 @@ export function VisualTab({
         </Button>
       </div>
 
-      <div className="flex items-start gap-2.5 rounded-lg border border-border bg-surface-2/60 px-3 py-2.5">
-        <ImageOff className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
-        <p className="text-xs leading-relaxed text-muted-foreground">
-          No image file was produced. An image generation provider is not connected, so the studio stops at a
-          production-ready prompt you can paste into your own tool.
-        </p>
+      <div className="space-y-2 rounded-lg border border-border bg-surface-2/60 p-3">
+        {visual.image_url ? (
+          <img src={visual.image_url} alt={visual.alt_text} className="w-full rounded-md border border-border" />
+        ) : (
+          <div className="flex items-start gap-2.5">
+            <ImageOff className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+            <p className="text-xs leading-relaxed text-muted-foreground">No image generated yet for this prompt.</p>
+          </div>
+        )}
+        {imgError ? <p className="text-xs text-destructive">{imgError}</p> : null}
+        <Button
+          size="sm"
+          variant={visual.image_url ? "outline" : "default"}
+          disabled={imgBusy || busy}
+          onClick={async () => {
+            setImgBusy(true);
+            setImgError(null);
+            try {
+              const url = await generateImageFor(prompt, negative);
+              await updateVisual(visual.id, { image_url: url });
+              await qc.invalidateQueries();
+            } catch (e) {
+              setImgError(e instanceof Error ? e.message : "Image generation failed. Please retry.");
+            } finally {
+              setImgBusy(false);
+            }
+          }}
+        >
+          {imgBusy ? <Loader2 className="size-3.5 animate-spin" /> : <RefreshCw className="size-3.5" />}
+          {imgBusy ? "Generating image… (up to a minute)" : visual.image_url ? "Regenerate image" : "Generate image"}
+        </Button>
       </div>
 
       <div className="space-y-1.5">
