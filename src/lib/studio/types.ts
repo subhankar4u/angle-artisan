@@ -81,7 +81,7 @@ export type QaCheck = {
   label: string;
   status: "pass" | "warning" | "fail";
   explanation: string;
-  fix?: string;
+  fix?: string | undefined;
 };
 
 export type Brief = {

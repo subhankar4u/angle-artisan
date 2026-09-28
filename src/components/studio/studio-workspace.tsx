@@ -204,7 +204,7 @@ export function StudioWorkspace({ projectId }: { projectId: string }) {
               onValueChange={(v) => setActiveStage(v as StageId)}
               className="flex min-h-0 flex-1 flex-col gap-0"
             >
-              <TabsList className="h-auto w-full justify-start gap-1 rounded-none border-b border-border bg-surface px-3 py-2">
+              <TabsList className="h-auto w-full flex-wrap justify-start gap-1 rounded-none border-b border-border bg-surface px-3 py-2">
                 {TABS.map((tab) => (
                   <TabsTrigger key={tab.stage} value={tab.stage} className="font-mono text-[11px]">
                     {tab.file}
