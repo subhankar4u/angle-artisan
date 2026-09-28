@@ -261,7 +261,7 @@ Adoption is not a licence count. It is a changed process step with a name attach
         const chars = postText.length;
         const hookLines = postText.split("\n").slice(0, 2).join(" ");
         const found = bannedWords.filter((w) => w && postText.toLowerCase().includes(w.toLowerCase()));
-        const hasNumbers = /\b\d{1,3}(?:[.,]\d+)?\s?%|\b(?:study|survey|report|research (?:shows|says))\b/i.test(
+        const hasNumbers = /\b\d{1,3}(?:[.,]\d+)?\s?%|\b(?:study|survey|research (?:shows|says)|report (?:shows|found|finds))\b/i.test(
           postText,
         );
 

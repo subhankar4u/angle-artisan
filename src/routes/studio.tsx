@@ -28,6 +28,7 @@ export const Route = createFileRoute("/studio")({
 function StudioPage() {
   const search = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
   const requested = search?.get("project");
+  const settingsQ = useQuery({ queryKey: api.qk.settings, queryFn: api.fetchSettings });
   const projectsQ = useQuery({ queryKey: api.qk.projects, queryFn: api.fetchProjects });
 
   const projectId = requested ?? projectsQ.data?.[0]?.id;
@@ -35,6 +36,7 @@ function StudioPage() {
   return (
     <AppShell
       title="Studio"
+      demoMode={settingsQ.data?.demo_mode ?? false}
       subtitle={projectsQ.data?.find((p) => p.id === projectId)?.name ?? "Content workspace"}
     >
       {projectsQ.isPending ? (
