@@ -45,7 +45,7 @@ function Dashboard() {
   return (
     <AppShell
       title="Dashboard"
-      subtitle={settings ? `Workspace for ${settings.creator_name}` : undefined}
+      {...(settings ? { subtitle: `Workspace for ${settings.creator_name}` } : {})}
       demoMode={settings?.demo_mode ?? true}
       actions={
         <Button size="sm" asChild>
