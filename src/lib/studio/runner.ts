@@ -11,7 +11,9 @@ import {
   saveArtifact,
   setStageStatus,
   updateRun,
+  updateVisual,
 } from "./api";
+import { createLiveProviders, generateImageFor } from "./live-provider";
 import {
   createDemoProviders,
   renderAngleMarkdown,
@@ -58,8 +60,9 @@ export async function executeStage(input: {
   settings: CreatorSettings;
 }): Promise<void> {
   const { runId, stage, brief, settings } = input;
-  const providers = createDemoProviders();
-  const source = settings.demo_mode ? "demo" : "demo";
+  const live = !settings.demo_mode;
+  const providers = live ? createLiveProviders() : createDemoProviders();
+  const source = live ? "live" : "demo";
 
   await setStageStatus(runId, stage, "running", { bumpAttempt: true });
   await updateRun(runId, { status: "running", current_stage: stage });
@@ -96,6 +99,11 @@ export async function executeStage(input: {
       const visual = await providers.visual.visual(brief, angle);
       await insertVisual(runId, visual);
       await saveArtifact(runId, "image_prompt", "image-prompt.md", renderVisualMarkdown(visual), source);
+      if (live) {
+        const url = await generateImageFor(visual.prompt, visual.negative_prompt);
+        const current = (await fetchVisuals(runId)).find((v) => v.is_current);
+        if (current) await updateVisual(current.id, { image_url: url });
+      }
     } else if (stage === "qa") {
       const posts = await fetchPostVersions(runId);
       const post = posts.find((p) => p.is_current) ?? posts[0];

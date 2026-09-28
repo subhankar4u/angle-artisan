@@ -27,7 +27,7 @@ Always return an empty sources array — do not list or invent sources.`,
       angles: `Create exactly 3 distinct angle candidates.
 JSON: {"angles":[{"label":string,"headline":string,"thesis":string,"why_it_works":string,"risk":string}]}`,
       post: `Write a LinkedIn post for the selected angle. 3 distinct hook options (1-2 lines each). Body 900-1600 characters, no hook inside the body. One clear CTA line. 3-5 hashtags without spaces.
-JSON: {"hooks":[{"text":string,"style":string}],"selected_hook_index":0,"body":string,"cta":string,"hashtags":[string]}`,
+JSON: {"hooks":[{"text":string,"rationale":string}],"selected_hook_index":0,"body":string,"cta":string,"hashtags":[string]}`,
       visual: `Design one image for the post: a clean editorial illustration, no text or logos in the image.
 JSON: {"concept":string,"prompt":string (detailed generation prompt),"negative_prompt":string,"alt_text":string}`,
     };
