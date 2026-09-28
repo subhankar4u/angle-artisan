@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import * as api from "@/lib/studio/api";
 import { executeFullRun, executeStage } from "@/lib/studio/runner";
-import { STAGE_META, type BriefLike, type PostVersion, type StageId, type VisualPrompt } from "@/lib/studio/types";
+import { STAGE_META, type PostVersion, type StageId, type VisualPrompt } from "@/lib/studio/types";
 
 const TABS: { stage: StageId; file: string }[] = [
   { stage: "research", file: "research.md" },
