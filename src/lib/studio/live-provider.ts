@@ -1,7 +1,11 @@
 // Live providers: real AI writing + image generation via server functions.
 // Research is AI-drafted reasoning only — no web retrieval, no sources.
 import { createDemoProviders } from "./demo-provider";
-import { liveGenerate, liveImage } from "./live.functions";
+import { liveGenerate as liveGenerateFn, liveImage } from "./live.functions";
+
+async function liveGenerate(input: Parameters<typeof liveGenerateFn>[0]): Promise<Record<string, unknown>> {
+  return JSON.parse(await liveGenerateFn(input)) as Record<string, unknown>;
+}
 import type { AgentProviders, AngleCandidate, PostDraft, VisualDraft } from "./providers";
 import type { Brief } from "./types";
 

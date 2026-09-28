@@ -31,7 +31,8 @@ JSON: {"hooks":[{"text":string,"rationale":string}],"selected_hook_index":0,"bod
       visual: `Design one image for the post: a clean editorial illustration, no text or logos in the image.
 JSON: {"concept":string,"prompt":string (detailed generation prompt),"negative_prompt":string,"alt_text":string}`,
     };
-    return generateJson<Record<string, unknown>>(system, `${specs[data.task]}\n\nContext:\n${data.context}`);
+    const json = await generateJson<Record<string, unknown>>(system, `${specs[data.task]}\n\nContext:\n${data.context}`);
+    return JSON.stringify(json);
   });
 
 export const liveImage = createServerFn({ method: "POST" })

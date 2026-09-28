@@ -206,7 +206,7 @@ export function BriefPanel({
       <div className="border-t border-border p-3">
         <Button className="w-full" disabled={running || !activeRunId} onClick={onFullRun}>
           {running ? <Loader2 className="size-4 animate-spin" /> : <Play className="size-4" />}
-          {running ? "Running all stages…" : "Full run (Demo Mode)"}
+          {running ? "Running all stages…" : "Full run"}
         </Button>
         <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
           Executes Research → Angle → Post → Visual → QA → Preview in order, then stops for human approval.
