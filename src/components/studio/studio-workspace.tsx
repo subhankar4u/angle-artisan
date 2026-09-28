@@ -336,4 +336,3 @@ function ErrorState({ message, onRetry }: { message: string; onRetry: () => void
   );
 }
 
-export type { BriefLike };
